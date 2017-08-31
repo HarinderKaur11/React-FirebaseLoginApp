@@ -71,6 +71,36 @@ class Authen extends Component {
 
   }
 
+  google(){
+    console.log("I am in google method");
+    //call the provider
+    //in provider create new instance of google auth provider
+    var provider = new firebase.auth.GoogleAuthProvider();
+    var promise = firebase.auth().signInWithPopup(provider);// popup method is good for web based application
+    // redirect method is good for mobile based application
+    //promise needs to be handled with then and catch
+    promise.then( result => {
+      var user = result.user;
+      console.log(result);
+      //make database entry
+      firebase.database().ref('users/'+user.uid).set({
+        email: user.email,
+        name: user.displayName
+      })
+      var lout = document.getElementById("logout");
+      var err= "You are logged in as: "+ user.email;
+        this.setState({err: err});
+      lout.classList.remove('hide');
+    });
+
+    promise.catch(e => {
+      var msg = e.message;
+      console.log(msg);
+    })
+
+
+  }
+
   constructor(props){
     super(props);
 
@@ -79,7 +109,8 @@ class Authen extends Component {
     };
     this.login = this.login.bind(this);
     this.signup = this.signup.bind(this);
-    this.logout=this.logout.bind(this);
+    this.logout = this.logout.bind(this);
+    this.google = this.google.bind(this);
   }
 
   render(){
@@ -90,7 +121,8 @@ class Authen extends Component {
         <p>{this.state.err}</p>
         <button onClick = {this.login}>Log In</button>
         <button onClick = {this.signup}>Sign up</button>
-        <button onClick = {this.logout} id="logout" className="hide">Log out</button>
+        <button onClick = {this.logout} id="logout" className="hide">Log out</button><br />
+        <button onClick = {this.google} id="google" className="">Sign in with Google</button>
 
       </div>
     );

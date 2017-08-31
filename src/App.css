@@ -59,6 +59,16 @@ input[type="password"].focus {
   border-bottom: solid 2px #969696;
 }
 
+#google{
+  font-size: 30px;
+  background-color: #DD4B39;
+  color: #fff;
+  padding: 10px 30px;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+
 button {
   font-size: 30px;
   background-color: #00B16A;
